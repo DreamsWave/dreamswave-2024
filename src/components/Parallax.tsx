@@ -1,10 +1,18 @@
 import { ParallaxBanner, ParallaxBannerLayer } from "react-scroll-parallax";
 import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
+import { getAspectRatio, getWindowDimensions } from "../utils";
 
 const imageLocation = "../assets/images/clouds";
 
 const PIXEL_SIZE = 5;
+
+const aspectRatioParams = {
+  maxAspectRatio: 2,
+  minAspectRatio: 0.5,
+  fullScreenWidth: 1920,
+  mobileWidth: 480,
+};
 
 const IMAGES = {
   cloudBackground: new URL(
@@ -39,20 +47,34 @@ const IMAGES = {
 };
 
 function BGEnd() {
-  const [aspectRatio, setAspectRatio] = useState("2/1");
+  const [aspectRatio, setAspectRatio] = useState(
+    `${getAspectRatio({
+      ...aspectRatioParams,
+      currentWidth: getWindowDimensions().width,
+    })}/1`
+  );
   const isBreakpoint = useMediaQuery({ query: "(max-width: 900px)" });
 
   useEffect(() => {
-    setAspectRatio(isBreakpoint ? "1/1" : "2/1");
-  }, [isBreakpoint]);
+    function handleResize() {
+      setAspectRatio(
+        `${getAspectRatio({
+          ...aspectRatioParams,
+          currentWidth: getWindowDimensions().width,
+        })}/1`
+      );
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <ParallaxBanner
       style={{
         aspectRatio,
         position: "absolute",
-        top: `calc(100% - ${
-          isBreakpoint ? 60 * PIXEL_SIZE : 80 * PIXEL_SIZE
-        }px)`,
+        top: `calc(100% - ${80 * PIXEL_SIZE}px)`,
       }}
     >
       <ParallaxBannerLayer
