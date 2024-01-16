@@ -1,0 +1,17 @@
+#root {
+  /* max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center; */
+  /* background-image: url(./assets/images/bg.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: bottom; */
+  min-height: 100vh;
+  /* background-image: url(./assets/images/pillar-line.png);
+  background-size: 100%;
+  background-repeat: repeat-y;
+  background-position-x: center;
+  background-position-y: bottom; */
+}
