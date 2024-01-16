@@ -3,7 +3,15 @@ import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
 import { getAspectRatio, getWindowDimensions } from "../utils";
 
-const imageLocation = "../assets/images/clouds";
+import cloudBackgroundImage from "../assets/images/clouds/cloud-background.png";
+import cloudLeftBottomImage from "../assets/images/clouds/cloud-left-bottom.png";
+import cloudLeftTopImage from "../assets/images/clouds/cloud-left-top.png";
+import cloudRightBottomImage from "../assets/images/clouds/cloud-right-bottom.png";
+import cloudRightTopImage from "../assets/images/clouds/cloud-right-top.png";
+import crystalBaseImage from "../assets/images/clouds/crystal-base.png";
+import crystalImage from "../assets/images/clouds/crystal.png";
+import mountainImage from "../assets/images/clouds/mountain.png";
+import pillarLineImage from "../assets/images/clouds/pillar-line.png";
 
 const PIXEL_SIZE = 5;
 
@@ -14,39 +22,7 @@ const aspectRatioParams = {
   mobileWidth: 480,
 };
 
-const IMAGES = {
-  cloudBackground: new URL(
-    `${imageLocation}/cloud-background.png`,
-    import.meta.url
-  ).href,
-  cloudLeftBottom: new URL(
-    `${imageLocation}/cloud-left-bottom.png`,
-    import.meta.url
-  ).href,
-  cloudLeftTop: new URL(`${imageLocation}/cloud-left-top.png`, import.meta.url)
-    .href,
-  cloudRightBottom: new URL(
-    `${imageLocation}/cloud-right-bottom.png`,
-    import.meta.url
-  ).href,
-  cloudRightTop: new URL(
-    `${imageLocation}/cloud-right-top.png`,
-    import.meta.url
-  ).href,
-  mountain: new URL(`${imageLocation}/mountain.png`, import.meta.url).href,
-  crystal: new URL(`${imageLocation}/crystal.png`, import.meta.url).href,
-  crystalLine: new URL(`${imageLocation}/crystal-line.png`, import.meta.url)
-    .href,
-  crystalBase: new URL(`${imageLocation}/crystal-base.png`, import.meta.url)
-    .href,
-  crystalGlow: new URL(`${imageLocation}/crystal-glow.png`, import.meta.url)
-    .href,
-  crystalLight: new URL(`${imageLocation}/crystal-light.png`, import.meta.url)
-    .href,
-  pillarLine: new URL(`${imageLocation}/pillar-line.png`, import.meta.url).href,
-};
-
-function BGEnd() {
+function Parallax() {
   const [aspectRatio, setAspectRatio] = useState(
     `${getAspectRatio({
       ...aspectRatioParams,
@@ -78,55 +54,55 @@ function BGEnd() {
       }}
     >
       <ParallaxBannerLayer
-        image={IMAGES.cloudBackground}
+        image={cloudBackgroundImage}
         speed={-15}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       <ParallaxBannerLayer
-        image={IMAGES.cloudLeftTop}
+        image={cloudLeftTopImage}
         speed={-10}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       <ParallaxBannerLayer
-        image={IMAGES.cloudRightTop}
+        image={cloudRightTopImage}
         speed={-5}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       <ParallaxBannerLayer
-        image={IMAGES.mountain}
+        image={mountainImage}
         speed={0}
         shouldAlwaysCompleteAnimation={true}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       {!isBreakpoint && (
         <ParallaxBannerLayer
-          image={IMAGES.pillarLine}
+          image={pillarLineImage}
           speed={0}
           shouldAlwaysCompleteAnimation={true}
           style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
         />
       )}
       <ParallaxBannerLayer
-        image={IMAGES.crystalBase}
+        image={crystalBaseImage}
         speed={0}
         shouldAlwaysCompleteAnimation={true}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       <ParallaxBannerLayer
-        image={IMAGES.crystal}
+        image={crystalImage}
         speed={0}
         translateY={[1, -3]}
         shouldAlwaysCompleteAnimation={true}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       <ParallaxBannerLayer
-        image={IMAGES.cloudLeftBottom}
+        image={cloudLeftBottomImage}
         speed={2}
         shouldAlwaysCompleteAnimation={true}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
       <ParallaxBannerLayer
-        image={IMAGES.cloudRightBottom}
+        image={cloudRightBottomImage}
         speed={5}
         shouldAlwaysCompleteAnimation={true}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
@@ -135,4 +111,4 @@ function BGEnd() {
   );
 }
 
-export default BGEnd;
+export default Parallax;
