@@ -1,5 +1,6 @@
 import { ParallaxBanner, ParallaxBannerLayer } from "react-scroll-parallax";
 import { useMediaQuery } from "react-responsive";
+import { useEffect, useState } from "react";
 
 const imageLocation = "../assets/images/clouds";
 
@@ -38,21 +39,20 @@ const IMAGES = {
 };
 
 function BGEnd() {
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 768px)" });
-  // const mobileStyles = {
-  //   width: "200%",
-  //   aspectRatio: "1/1",
-  //   transform: "translateX(-47%)",
-  // };
+  const [aspectRatio, setAspectRatio] = useState("2/1");
+  const isBreakpoint = useMediaQuery({ query: "(max-width: 900px)" });
+
+  useEffect(() => {
+    setAspectRatio(isBreakpoint ? "1/1" : "2/1");
+  }, [isBreakpoint]);
   return (
     <ParallaxBanner
       style={{
-        aspectRatio: "2/1",
+        aspectRatio,
         position: "absolute",
         top: `calc(100% - ${
-          isTabletOrMobile ? 60 * PIXEL_SIZE : 80 * PIXEL_SIZE
+          isBreakpoint ? 60 * PIXEL_SIZE : 80 * PIXEL_SIZE
         }px)`,
-        // ...(isTabletOrMobile && mobileStyles),
       }}
     >
       <ParallaxBannerLayer
@@ -76,24 +76,14 @@ function BGEnd() {
         shouldAlwaysCompleteAnimation={true}
         style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
       />
-      <ParallaxBannerLayer
-        image={IMAGES.pillarLine}
-        speed={0}
-        shouldAlwaysCompleteAnimation={true}
-        style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
-      />
-      {/* <ParallaxBannerLayer
-        image={IMAGES.crystalGlow}
-        speed={0}
-        shouldAlwaysCompleteAnimation={true}
-        style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
-      />
-      <ParallaxBannerLayer
-        image={IMAGES.crystalLight}
-        speed={0}
-        shouldAlwaysCompleteAnimation={true}
-        style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
-      /> */}
+      {!isBreakpoint && (
+        <ParallaxBannerLayer
+          image={IMAGES.pillarLine}
+          speed={0}
+          shouldAlwaysCompleteAnimation={true}
+          style={{ backgroundSize: "2560px", backgroundRepeat: "no-repeat" }}
+        />
+      )}
       <ParallaxBannerLayer
         image={IMAGES.crystalBase}
         speed={0}

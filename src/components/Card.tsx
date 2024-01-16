@@ -5,19 +5,33 @@ import cardBorderImage from "../assets/images/card-border.png";
 
 const PIXEL_SIZE = 5;
 
-const CardWrapper = styled.div<{ rightSide?: boolean }>`
+const CardWrapper = styled.div<{
+  rightSide?: boolean;
+  noCardConnection?: boolean;
+}>`
   margin: ${7 * PIXEL_SIZE}px 0;
   color: #546987;
   font-size: ${2 * PIXEL_SIZE}px;
   position: relative;
   height: fit-content;
   display: inline-flex;
-  margin-right: ${({ rightSide }) => (rightSide ? `${17 * PIXEL_SIZE}px` : 0)};
-  margin-left: ${({ rightSide }) => (rightSide ? 0 : `${17 * PIXEL_SIZE}px`)};
+  margin-right: ${({ rightSide, noCardConnection }) =>
+    noCardConnection
+      ? `${2 * PIXEL_SIZE}px`
+      : rightSide
+      ? `${2 * PIXEL_SIZE}px`
+      : `${10 * PIXEL_SIZE}px`};
+  margin-left: ${({ rightSide, noCardConnection }) =>
+    noCardConnection
+      ? `${2 * PIXEL_SIZE}px`
+      : rightSide
+      ? `${10 * PIXEL_SIZE}px`
+      : `${2 * PIXEL_SIZE}px`};
   z-index: 1;
 
   &::before {
     content: "";
+    display: ${({ noCardConnection }) => (noCardConnection ? "none" : "flex")};
     width: ${10 * PIXEL_SIZE}px;
     height: ${1 * PIXEL_SIZE}px;
     background-image: url(${cardConnetionImage});
@@ -26,8 +40,8 @@ const CardWrapper = styled.div<{ rightSide?: boolean }>`
     background-size: contain;
     position: absolute;
     bottom: calc(100% + ${2 * PIXEL_SIZE}px);
-    right: ${({ rightSide }) => (rightSide ? `auto` : `100%`)};
-    left: ${({ rightSide }) => (rightSide ? `100%` : `auto`)};
+    right: ${({ rightSide }) => (rightSide ? `100%` : `auto`)};
+    left: ${({ rightSide }) => (rightSide ? `auto` : `100%`)};
   }
 
   &::after {
@@ -40,10 +54,12 @@ const CardWrapper = styled.div<{ rightSide?: boolean }>`
     background-size: contain;
     position: absolute;
     bottom: calc(100% - ${1 * PIXEL_SIZE}px);
-    right: ${({ rightSide }) =>
-      rightSide ? `auto` : `calc(100% + ${9 * PIXEL_SIZE}px)`};
+    right: ${({ rightSide, noCardConnection }) =>
+      rightSide
+        ? `calc(100% + ${noCardConnection ? 1 * PIXEL_SIZE : 9 * PIXEL_SIZE}px)`
+        : `auto`};
     left: ${({ rightSide }) =>
-      rightSide ? `calc(100% + ${9 * PIXEL_SIZE}px)` : `auto`};
+      rightSide ? `auto` : `calc(100% + ${9 * PIXEL_SIZE}px)`};
     z-index: 3;
   }
 `;
@@ -54,13 +70,13 @@ const CardTitle = styled.h2<{ rightSide?: boolean }>`
   margin: 0;
   position: absolute;
   bottom: 100%;
-  left: ${({ rightSide }) => (rightSide ? `auto` : `${1 * PIXEL_SIZE}px`)};
-  right: ${({ rightSide }) => (rightSide ? `${1 * PIXEL_SIZE}px` : `auto`)};
-  padding-left: ${({ rightSide }) => (rightSide ? `0` : `${3 * PIXEL_SIZE}px`)};
+  left: ${({ rightSide }) => (rightSide ? `${1 * PIXEL_SIZE}px` : `auto`)};
+  right: ${({ rightSide }) => (rightSide ? `auto` : `${1 * PIXEL_SIZE}px`)};
+  padding-left: ${({ rightSide }) => (rightSide ? `${3 * PIXEL_SIZE}px` : `0`)};
   padding-right: ${({ rightSide }) =>
-    rightSide ? `${3 * PIXEL_SIZE}px` : `0`};
+    rightSide ? `0` : `${3 * PIXEL_SIZE}px`};
   background: linear-gradient(
-    ${({ rightSide }) => (rightSide ? `270deg` : `90deg`)},
+    ${({ rightSide }) => (rightSide ? `90deg` : `270deg`)},
     rgba(198, 219, 222, 1) 0%,
     rgba(198, 219, 222, 1) 50%,
     rgba(198, 219, 222, 0) 100%
@@ -68,7 +84,7 @@ const CardTitle = styled.h2<{ rightSide?: boolean }>`
   color: #fff;
   text-transform: uppercase;
   line-height: 2.5;
-  text-align: ${({ rightSide }) => (rightSide ? `right` : `left`)};
+  text-align: ${({ rightSide }) => (rightSide ? `left` : `right`)};
   text-wrap: nowrap;
 
   &:after {
@@ -78,8 +94,8 @@ const CardTitle = styled.h2<{ rightSide?: boolean }>`
     background: rgba(198, 219, 222, 1);
     position: absolute;
     top: ${1 * PIXEL_SIZE}px;
-    left: ${({ rightSide }) => (rightSide ? `100%` : `-${1 * PIXEL_SIZE}px`)};
-    right: ${({ rightSide }) => (rightSide ? `0` : `100%`)};
+    left: ${({ rightSide }) => (rightSide ? `-${1 * PIXEL_SIZE}px` : `100%`)};
+    right: ${({ rightSide }) => (rightSide ? `100%` : `0`)};
   }
 `;
 
@@ -138,16 +154,22 @@ const CardBackgroundLayer = styled.div<CardBackgroundLayerProps>`
 type CardProps = {
   children: React.ReactNode;
   title?: string;
-  side?: "left" | "right";
+  rightSide?: boolean;
+  isMobile?: boolean;
 };
-function Card({ children, title, side = "left" }: CardProps) {
+function Card({
+  children,
+  title,
+  rightSide = false,
+  isMobile = false,
+}: CardProps) {
   const cornerLength = PIXEL_SIZE * 1;
   const borderSlice = 10;
   const backgroundColor = "#dfeded";
 
   return (
-    <CardWrapper rightSide={side == "left"}>
-      {title && <CardTitle rightSide={side == "left"}>{title}</CardTitle>}
+    <CardWrapper rightSide={rightSide} noCardConnection={isMobile}>
+      {title && <CardTitle rightSide={rightSide}>{title}</CardTitle>}
       <CardContent>{children}</CardContent>
       <CardBorderLayer
         pixelSize={PIXEL_SIZE}
